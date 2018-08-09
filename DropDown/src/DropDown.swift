@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol DropDownDelegate: AnyObject {
+public protocol DropDownDelegate: AnyObject {
     func dropDownDidShow(dropDown: DropDown)
     func dropDownDidHide(dropDown: DropDown)
 }
@@ -83,7 +83,7 @@ public final class DropDown: UIView {
 	/// The current visible drop down. There can be only one visible drop down at a time.
 	public static weak var VisibleDropDown: DropDown?
 
-    weak var delegate: DropDownDelegate?
+    public weak var delegate: DropDownDelegate?
     
 	//MARK: UI
 	fileprivate let dismissableView = UIView()
