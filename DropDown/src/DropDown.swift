@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol DropDownDelegate: AnyObject {
+    func dropDownDidShow(dropDown: DropDown)
+    func dropDownDidHide(dropDown: DropDown)
+}
+
 public typealias Index = Int
 public typealias Closure = () -> Void
 public typealias SelectionClosure = (Index, String) -> Void
@@ -78,6 +83,8 @@ public final class DropDown: UIView {
 	/// The current visible drop down. There can be only one visible drop down at a time.
 	public static weak var VisibleDropDown: DropDown?
 
+    weak var delegate: DropDownDelegate?
+    
 	//MARK: UI
 	fileprivate let dismissableView = UIView()
 	fileprivate let tableViewContainer = UIView()
@@ -849,7 +856,7 @@ extension DropDown {
 
         //deselectRows(at: selectedRowIndices)
         selectRows(at: selectedRowIndices)
-
+        self.delegate?.dropDownDidShow(dropDown: self)
 		return (layout.canBeDisplayed, layout.offscreenHeight)
 	}
 
@@ -867,7 +874,7 @@ extension DropDown {
 		if isHidden {
 			return
 		}
-
+        
 		UIView.animate(
 			withDuration: animationduration,
 			delay: 0,
@@ -877,7 +884,7 @@ extension DropDown {
 			},
 			completion: { [weak self] finished in
 				guard let `self` = self else { return }
-
+                self.delegate?.dropDownDidHide(dropDown: self)
 				self.isHidden = true
 				self.removeFromSuperview()
 			})
